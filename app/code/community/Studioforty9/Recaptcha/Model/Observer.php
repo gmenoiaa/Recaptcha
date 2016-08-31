@@ -40,6 +40,13 @@ class Studioforty9_Recaptcha_Model_Observer
         
         /** @var Studioforty9_Recaptcha_Helper_Response $response */
         $response = Mage::helper('studioforty9_recaptcha/request')->verify();
+        
+        // Dispach event to override captcha response for some cases
+        Mage::dispatchEvent ( 'studioforty9_recaptcha_verify', array (
+				'route' => $route,
+				'response' => $response 
+		) );
+        
         if ($response->isSuccess()) return;
         
         /** reCAPTCHA Verification Failed **/
